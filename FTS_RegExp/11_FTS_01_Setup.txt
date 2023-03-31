@@ -1,0 +1,90 @@
+
+- Lea la página: https://en.wikipedia.org/wiki/Full-text_search
+
+- Instale EasyPHP
+	- Si usa un web preinstalado, y es esclavo, ejecute en el cliente de mysql: STOP SLAVE;
+
+- Ejecute EasyPHP
+
+- Ingrese a phpMyAdmin
+
+- Importe Classic Models DB
+
+- Seleccione la tabla "products"
+
+- Click en la pestaña "Estructura"
+
+- En el campo productName, poner el mouse sobre "Más" y dar click en "Texto Completo"
+	- Verificar que se ha indicado como salida: ALTER TABLE `products` ADD FULLTEXT(`productName`);
+	
+- En el campo productDescription, poner el mouse sobre "Más" y dar click en "Texto Completo"
+	- Verificar que se ha indicado como salida: ALTER TABLE `products` ADD FULLTEXT(`productDescription`);
+
+- Genere tres ventanas para ver los resultados de los tres queries siguientes:
+
+	SELECT * FROM products WHERE MATCH(productName)
+	AGAINST('davidson bar' IN NATURAL LANGUAGE MODE);
+	
+	SELECT * FROM products WHERE MATCH(productDescription)
+	AGAINST('davidson bar' IN NATURAL LANGUAGE MODE);
+		
+	SELECT *
+	FROM
+	(
+		SELECT * FROM products WHERE MATCH(productName)
+		AGAINST('davidson bar' IN NATURAL LANGUAGE MODE)
+	) A,
+	(
+		SELECT * FROM products WHERE MATCH(productDescription)
+		AGAINST('davidson bar' IN NATURAL LANGUAGE MODE)
+	) B
+	WHERE
+		A.productCode = B.productCode;
+
+		
+- Haga lo mismo con los siguientes queries:
+
+	SELECT productCode, MATCH(productName) AGAINST('davidson bar' IN NATURAL LANGUAGE MODE) as score
+	FROM products
+	ORDER BY score DESC;
+
+	SELECT productCode, MATCH(productDescription) AGAINST('davidson bar' IN NATURAL LANGUAGE MODE) as score
+	FROM products
+	ORDER BY score DESC;
+
+	SELECT *
+	FROM
+	(
+		SELECT A.productCode, (A.score + B.score) AS nscore
+		FROM
+		(
+			SELECT productCode, MATCH(productName) AGAINST('davidson bar' IN NATURAL LANGUAGE MODE) as score
+			FROM products
+		) A,
+		(
+			SELECT productCode, MATCH(productDescription) AGAINST('davidson bar' IN NATURAL LANGUAGE MODE) as score
+			FROM products
+		) B
+		WHERE
+			A.productCode = B.productCode
+	) C
+	ORDER BY C.nscore DESC;
+	
+- Boolean Mode, compare las salida de estos queries:
+
+	SELECT * FROM products WHERE MATCH(productDescription)
+	AGAINST('wheels rubber' IN BOOLEAN MODE)
+	
+	SELECT * FROM products WHERE MATCH(productDescription)
+	AGAINST('+wheels -rubber' IN BOOLEAN MODE)
+	
+	SELECT * FROM products WHERE MATCH(productDescription)
+	AGAINST('-wheels +rubber' IN BOOLEAN MODE)
+	
+	
+- Entregue en la actividad, fotos como evidencia que efectuó la asignación.
+	
+	
+Apoyo:
+
+	http://www.w3resource.com/mysql/mysql-full-text-search-functions.php

@@ -1,0 +1,44 @@
+SELECT
+	id, Nombre 
+FROM mytable
+WHERE
+	Nombre = 'Acevedo, Audra Q.'
+	
+Mostrando filas 0 - 3 (total de 4, La consulta tardó 0.0010 seg)
+
+ 
+SELECT
+	id, Nombre 
+FROM mytable
+WHERE
+	Nombre LIKE 'Acevedo%Audra%'
+	
+Mostrando filas 0 - 3 (total de 4, La consulta tardó 0.0033 seg)
+
+
+SELECT
+	id, Nombre 
+FROM mytable
+WHERE
+	MATCH(Nombre) AGAINST('Acevedo Audra' IN NATURAL LANGUAGE MODE);
+
+Mostrando filas 0 - 11 (total de 12, La consulta tardó 0.0028 seg)
+ 
+
+SELECT
+	id, Nombre, 
+	MATCH(Nombre) AGAINST('Acevedo Audra' IN NATURAL LANGUAGE MODE) as score
+FROM mytable
+ORDER BY score DESC;
+
+Mostrando filas 0 - 24 (total de 2000, La consulta tardó 0.0043 seg)
+
+
+SELECT
+	id, Nombre, 
+	MATCH(Nombre) AGAINST('Audra Acevedo' IN NATURAL LANGUAGE MODE) as score
+FROM mytable
+ORDER BY score DESC;
+
+Mostrando filas 0 - 24 (total de 2000, La consulta tardó 0.0036 seg)
+

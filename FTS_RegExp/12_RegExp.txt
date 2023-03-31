@@ -1,0 +1,123 @@
+
+---
+Inicio
+
+SELECT * FROM employees WHERE lastName REGEXP '^pa'
+
+
+---
+Al final
+
+SELECT * FROM employees WHERE lastName REGEXP 'son$'
+
+
+---
+Encuentra el patron presendente
+
+SELECT * FROM employees WHERE (lastName REGEXP 'rar?') OR (firstName REGEXP 'rar?')
+
+	Bondur Gerard
+	Hernandez Gerard
+	Gerard Martin
+
+SELECT * FROM employees WHERE (lastName REGEXP 'ana?') OR (firstName REGEXP 'ana?')
+
+	Murphy Diane
+	Bow Anthony
+	Vanauf George
+	Hernandez Gerard
+	Fixter Andy
+
+SELECT * FROM employees WHERE (lastName REGEXP 'rdz?') OR (firstName REGEXP 'rdz?')
+
+	Bondur Gerard
+	Hernandez Gerard
+	Gerard Martin
+
+SELECT * FROM employees WHERE (lastName REGEXP 'shi?') OR (firstName REGEXP 'shi?')
+	
+	Marsh Peter
+	Nishi Mami
+	Kato Yoshimi
+
+
+---
+Contiene alguna de las subcadenas de los listados
+
+SELECT * FROM employees WHERE firstName REGEXP 'L|M'
+
+
+---
+Contiene alguna de los caracteres de los listados
+
+SELECT * FROM employees WHERE firstName REGEXP '[LM]'
+
+
+---
+Empieza con alguno de los listados
+
+SELECT * FROM employees WHERE firstName REGEXP '^(L|M)'
+
+---
+Contiene un caracter y luego otro
+
+SELECT * FROM employees WHERE firstName REGEXP '[L-M].[e]'
+SELECT * FROM employees WHERE firstName REGEXP '[L-M][e]'
+
+
+
+---
+Está la palabra
+
+SELECT * FROM products WHERE productname REGEXP 'ford';
+
+---
+Tiene cierta longitud
+
+SELECT * FROM products WHERE productname REGEXP '^.{10}$';
+
+------------------------
+
+DELIMITER $$
+
+DROP FUNCTION IF EXISTS `validateEmail`$$
+CREATE FUNCTION `VALIDATE_EMAIL` (email VARCHAR(360)) RETURNS INT
+BEGIN
+RETURN email REGEXP "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@([a-z0-9]+[a-z0-9-]*)*[a-z0-9]+(\.([a-z0-9]+[a-z0-9-]*)*[a-z0-9]+)*\.[a-z]{2,6}$";
+END$$
+
+DELIMITER ;
+
+
+CREATE FUNCTION `validateEmail`(`email` VARCHAR(200) CHARSET utf8) RETURNS BOOLEAN DETERMINISTIC CONTAINS SQL SQL SECURITY DEFINER RETURN email REGEXP "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@([a-z0-9]+[a-z0-9-]*)*[a-z0-9]+(\.([a-z0-9]+[a-z0-9-]*)*[a-z0-9]+)*\.[a-z]{2,6}$";
+
+
+- RegEx
+- Eventos
+- NoSQL
+
+X Respuesta de los ejercicios y del examen.
+	
+	https://www.w3schools.com/nodejs/nodejs_mongodb_insert.asp
+	https://www.tutorialspoint.com/mongodb/mongodb_insert_document.htm
+	https://www.tutorialesprogramacionya.com/mongodbya/
+	https://www.mongodbtutorial.org/mongodb-crud/
+	
+	//var myObj = {name:"Company Inc.", address : "Reforma 222"};
+	//db.customers.insertOne(myObj);
+	//db.customers.find();
+	//var myObjs = [
+	//    {name:"2 Company Inc.", address : "2 Reforma 222"},
+	//    {name:"3 Company Inc.", address : "3 Reforma 222"}
+	//];
+	//db.customers.insertMany(myObjs);
+	// db.customers.find().pretty();
+
+	//var myObj = {_id: 12345, name:"4 Company Inc.", address : "4 Reforma 222"};
+	//db.customers.insertOne(myObj);
+
+	//db.customers.find({}, {_id:0, name:1});
+	//db.customers.find({name: "Company Inc."});
+	//db.customers.find({name: /^2/});
+	//db.customers.find().sort({name: 1});
+
