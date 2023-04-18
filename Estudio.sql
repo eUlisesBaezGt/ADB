@@ -37,3 +37,11 @@ SELECT id,
 FROM mytable
 HAVING score > 0
 ORDER BY score DESC;
+
+SELECT *
+FROM products
+WHERE MATCH(productName) AGAINST('davidson bar' IN NATURAL LANGUAGE MODE);
+
+SELECT *
+FROM products
+WHERE MATCH(productDescription) AGAINST('davidson bar' IN NATURAL LANGUAGE MODE);
